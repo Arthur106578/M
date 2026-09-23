@@ -1,17 +1,55 @@
-# hello_world
+# Hello World - Flutter
 
-A new Flutter project.
+第一个 Flutter 应用，支持 Android 模拟器、Web 端和 Windows 桌面运行。
 
-## Getting Started
+## 运行环境
 
-This project is a starting point for a Flutter application.
+- Flutter 3.47.4 (stable)
+- Dart 3.13.3
+- Android SDK 35.0.0 / 36
+- Visual Studio 2022 (C++ 桌面开发)
+- Windows 11 25H2
 
-A few resources to get you started if this is your first Flutter project:
+## 运行方式
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+```bash
+# 安装依赖
+flutter pub get
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Web 端运行
+flutter run -d edge
+
+# Android 模拟器运行
+flutter run -d emulator-5554
+
+# Windows 桌面运行
+flutter run -d windows
+```
+
+## 运行截图
+
+### Flutter Doctor 全绿
+![Flutter Doctor](../docs/flutter_doctor.png)
+
+### Web 端运行 (Edge)
+![Web 端运行](../docs/web_run.png)
+
+### Android 模拟器运行
+![Android 模拟器运行](../docs/android_emulator_run.png)
+
+## 项目结构
+
+```
+hello_world/
+├── lib/main.dart       # 应用入口 (runApp)
+├── pubspec.yaml        # 依赖声明
+├── android/            # Android 平台工程
+├── web/                # Web 平台工程
+├── windows/            # Windows 桌面工程
+└── test/               # 测试
+```
+
+## 核心概念
+
+- `runApp(const MyApp())` — 将根组件挂载到屏幕，是 Flutter 应用起点
+- `Widget` — Flutter 中一切皆 Widget，描述界面的不可变配置树
