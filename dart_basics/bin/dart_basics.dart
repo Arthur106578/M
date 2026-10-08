@@ -2,6 +2,7 @@ import 'package:dart_basics/dart_basics.dart' as dart_basics;
 import 'types_demo.dart';
 import 'func_demo.dart';
 import 'flow_demo.dart';
+import 'practice_demo.dart';
 
 void main(List<String> arguments) {
   print('=== 默认模板 ===');
@@ -15,4 +16,7 @@ void main(List<String> arguments) {
 
   print('\n=== 分级器 / for-in 循环 ===');
   print(flowDemo());
+
+  print('\n=== 自主实践 6.2 任务1-3 ===');
+  print(practiceDemo());
 }
