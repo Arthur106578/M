@@ -42,7 +42,8 @@
 | 2026-10-14 | 6.2-2 | 字段校验改抛可读 `FormatException`，类型错误提示 | `5f65ad9` |
 | 2026-10-14 | 6.2-3 | 加 `Book.toJson` + roundtrip 反向验证与用例 | `a94388a` |
 | 2026-10-14 | 6.2-4 | 核查依赖 `^` 约束 / 无冗余 / lock 已提交（无代码改动） | 同上一提交 |
-| 2026-10-14 | 报告记录 | 本文件 `lecture5/progress.md` | commit（待提交） |
+| 2026-10-14 | 6.2-1 | 新建嵌套回调版 `bin/callback_version.dart`，与顺序 await 版对比 | `b5dd2aa` |
+| 2026-10-14 | 报告记录 | 本文件 `lecture5/progress.md`（含 6.2-1 补齐） | commit（待提交） |
 
 ---
 
@@ -109,6 +110,39 @@ final top3 = (List<Book>.from(books)
       ..sort((a, b) => b.borrowCount.compareTo(a.borrowCount))).take(3); // Top3
 ```
 
+### 代码4：6.2-1 回调版 → 顺序 await 版（改写对比）
+
+```dart
+// 改写前（bin/callback_version.dart）：then/catchError 层层嵌套
+file.exists().then((exists) {
+  if (!exists) { print('数据文件缺失，请检查data/books.json'); return; }
+  file.readAsString().then((raw) {
+    final books = (jsonDecode(raw) as List<dynamic>)
+        .map((e) => Book.fromJson(e as Map<String, dynamic>))
+        .toList();
+    // …统计与输出…
+  }).catchError((Object e) => print('数据格式错误：$e'));
+}).catchError((Object e) => print('读取失败：$e'));
+```
+
+```dart
+// 改写后（bin/async_json.dart）：顺序 await，一眼到底
+Future<void> main(List<String> arguments) async {
+  final file = File(p.join(Directory.current.path, 'data', 'books.json'));
+  if (!await file.exists()) {
+    print('数据文件缺失，请检查data/books.json');
+    return;
+  }
+  try {
+    _report(_parse(await file.readAsString()));
+  } on FormatException catch (e) {
+    print('数据格式错误：${e.message}');
+  }
+}
+```
+
+**要点**：扁平化嵌套、流程顺序化；错误处理由分散的各层 `catchError` 收敛为一处 `try/on FormatException`；两版输出完全一致。
+
 ---
 
 ## 五、检查点结果
@@ -130,7 +164,7 @@ final top3 = (List<Book>.from(books)
 
 | 序 | 要求 | 状态 | 说明 |
 |---|---|---|---|
-| 1 | async/await 改写（回调版→顺序 await） | ⬜ 待补 | 需作业页附的「嵌套回调版」原始代码；当前案例本身已是顺序 `await` 写法 |
+| 1 | async/await 改写（回调版→顺序 await） | ✅ | `b5dd2aa`：新建 `bin/callback_version.dart`（嵌套回调版）与 `bin/async_json.dart`（顺序 await）对比，两者输出一致 |
 | 2 | 异常兜底：文件缺失 / 字段缺失 / 类型错误均有可读提示 | ✅ | `fdd1af6` 起用 `exists()`；`5f65ad9` 起 `FormatException` 覆盖字段缺失与类型错误 |
 | 3 | JSON→类：完整字段模型化 + `toJson` roundtrip 一致 | ✅ | `a94388a`；运行时输出 `roundtrip 校验：一致`，并有用例覆盖 |
 | 4 | pubspec 规范：`^` 约束 / 无冗余 / lock 已提交 | ✅ | `path ^1.9.0`、`lints ^6.0.0`、`test ^1.25.6` 均有用途；`pubspec.lock` 在 `fdd1af6` 入库 |
@@ -178,7 +212,7 @@ final top3 = (List<Book>.from(books)
 | 6.1 检查点（5） | ✅ 正常/缺失/类型三条路径实测通过 |
 | 6.1 Git 规范（5） | ✅ 每步一次提交，`feat:`/`docs:` 前缀 |
 | 6.1 报告记录（5） | ✅ 本文件 |
-| 6.2-1 async/await 改写 | ⬜ 待补素材 |
+| 6.2-1 async/await 改写 | ✅ 回调版→顺序 await 对比（`b5dd2aa`） |
 | 6.2-2 异常兜底 | ✅ 三类异常均可读提示 |
 | 6.2-3 模型化 + roundtrip | ✅ `toJson` + 反向验证一致 |
 | 6.2-4 pubspec 规范 | ✅ 约束/冗余/lock 均合规 |
