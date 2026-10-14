@@ -27,8 +27,23 @@ void main() {
       expect(book.borrowCount, 0);
     });
 
-    test('字段缺失时抛出类型转换异常', () {
-      expect(() => Book.fromJson(const {'id': 2}), throwsA(isA<TypeError>()));
+    test('字段缺失时抛出可读的 FormatException', () {
+      expect(
+        () => Book.fromJson(const {'id': 2}),
+        throwsA(isA<FormatException>()),
+      );
+    });
+
+    test('字段类型不符时抛出可读的 FormatException', () {
+      expect(
+        () => Book.fromJson(const {
+          'id': '2',
+          'title': '活着',
+          'category': '文学',
+          'borrowCount': 96,
+        }),
+        throwsA(isA<FormatException>()),
+      );
     });
   });
 }

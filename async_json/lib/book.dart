@@ -13,13 +13,35 @@ class Book {
   });
 
   /// 命名构造：从 JSON Map 反序列化为 Book。
-  factory Book.fromJson(Map<String, dynamic> json) => Book(
-    id: json['id'] as int,
-    title: json['title'] as String,
-    category: json['category'] as String,
-    // borrowCount 缺失或为 null 时默认 0，避免 `null as int` 断言崩溃。
-    borrowCount: json['borrowCount'] as int? ?? 0,
-  );
+  ///
+  /// 字段缺失或类型不符时抛出可读的 [FormatException]，而不是 `null as int`
+  /// 这类类型断言崩溃，便于上层统一给出友好提示。
+  factory Book.fromJson(Map<String, dynamic> json) {
+    final id = json['id'];
+    final title = json['title'];
+    final category = json['category'];
+    final borrowCount = json['borrowCount'] ?? 0; // 缺失时默认 0
+
+    if (id is! int) {
+      throw FormatException('字段 id 应为整数，实际为 ${id.runtimeType}');
+    }
+    if (title is! String) {
+      throw FormatException('字段 title 应为字符串，实际为 ${title.runtimeType}');
+    }
+    if (category is! String) {
+      throw FormatException('字段 category 应为字符串，实际为 ${category.runtimeType}');
+    }
+    if (borrowCount is! int) {
+      throw FormatException('字段 borrowCount 应为整数，实际为 ${borrowCount.runtimeType}');
+    }
+
+    return Book(
+      id: id,
+      title: title,
+      category: category,
+      borrowCount: borrowCount,
+    );
+  }
 
   @override
   String toString() => '$title（$category，借阅 $borrowCount 次）';
