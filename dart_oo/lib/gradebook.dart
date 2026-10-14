@@ -1,18 +1,23 @@
+import 'logger.dart';
 import 'student.dart';
 
-/// 成绩册：内部持有学生列表，构造时接收列表。
-class GradeBook {
+/// 成绩册：内部持有学生列表，构造时接收列表；混入 Logger 记录日志。
+class GradeBook with Logger {
   final List<Student> _students;
 
   /// 及格线
   static const int passScore = 60;
 
-  GradeBook(List<Student> students) : _students = List.of(students);
+  GradeBook(List<Student> students) : _students = List.of(students) {
+    log('GradeBook 初始化：${_students.length} 名学生');
+  }
 
   GradeBook.fromJson(List<dynamic> json)
       : _students = json
             .map((e) => Student.fromJson(e as Map<String, dynamic>))
-            .toList();
+            .toList() {
+    log('GradeBook.fromJson 载入：${_students.length} 名学生');
+  }
 
   /// 只读视图，防止外部直接改写内部列表。
   List<Student> get students => List.unmodifiable(_students);
