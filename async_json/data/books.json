@@ -1,0 +1,14 @@
+[
+  { "id": 1, "title": "红楼梦", "category": "文学", "borrowCount": 128 },
+  { "id": 2, "title": "活着", "category": "文学", "borrowCount": 96 },
+  { "id": 3, "title": "百年孤独", "category": "文学", "borrowCount": 74 },
+  { "id": 4, "title": "小王子", "category": "文学", "borrowCount": 115 },
+  { "id": 5, "title": "时间简史", "category": "科技", "borrowCount": 88 },
+  { "id": 6, "title": "代码大全", "category": "科技", "borrowCount": 65 },
+  { "id": 7, "title": "深入理解计算机系统", "category": "科技", "borrowCount": 52 },
+  { "id": 8, "title": "万历十五年", "category": "历史", "borrowCount": 60 },
+  { "id": 9, "title": "人类简史", "category": "历史", "borrowCount": 103 },
+  { "id": 10, "title": "枪炮、病菌与钢铁", "category": "历史", "borrowCount": 47 },
+  { "id": 11, "title": "艺术的故事", "category": "艺术", "borrowCount": 39 },
+  { "id": 12, "title": "西方美术史", "category": "艺术", "borrowCount": 28 }
+]
