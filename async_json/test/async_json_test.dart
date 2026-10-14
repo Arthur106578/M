@@ -45,5 +45,21 @@ void main() {
         throwsA(isA<FormatException>()),
       );
     });
+
+    test('toJson 反向验证：fromJson(toJson()) 与原对象一致', () {
+      final book = Book(
+        id: 3,
+        title: '百年孤独',
+        category: '文学',
+        borrowCount: 74,
+      );
+
+      final roundtrip = Book.fromJson(book.toJson());
+
+      expect(roundtrip.id, book.id);
+      expect(roundtrip.title, book.title);
+      expect(roundtrip.category, book.category);
+      expect(roundtrip.borrowCount, book.borrowCount);
+    });
   });
 }

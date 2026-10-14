@@ -43,6 +43,14 @@ class Book {
     );
   }
 
+  /// 序列化回 JSON Map，供 roundtrip 反向验证：fromJson(toJson()) 应保持一致。
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    'category': category,
+    'borrowCount': borrowCount,
+  };
+
   @override
   String toString() => '$title（$category，借阅 $borrowCount 次）';
 }

@@ -59,4 +59,10 @@ void _report(List<Book> books) {
   for (final book in top3) {
     print('  ${book.title} —— ${book.borrowCount} 次');
   }
+
+  // roundtrip 反向验证：模型 → JSON → 模型，二次序列化文本应完全一致。
+  final encoded = jsonEncode(books.map((book) => book.toJson()).toList());
+  final roundtripSame =
+      encoded == jsonEncode(_parse(encoded).map((book) => book.toJson()).toList());
+  print('roundtrip 校验：${roundtripSame ? '一致' : '不一致'}');
 }
