@@ -9,6 +9,12 @@ import 'package:path/path.dart' as p;
 Future<void> main(List<String> arguments) async {
   final file = File(p.join(Directory.current.path, 'data', 'books.json'));
 
+  // 文件缺失时给出友好提示，而不是抛出 FileSystemException 崩溃堆栈。
+  if (!await file.exists()) {
+    print('数据文件缺失，请检查data/books.json');
+    return;
+  }
+
   final raw = await file.readAsString(); // 异步读取
   final books = (jsonDecode(raw) as List<dynamic>)
       .map((e) => Book.fromJson(e as Map<String, dynamic>))

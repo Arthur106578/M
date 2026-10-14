@@ -17,6 +17,16 @@ void main() {
       expect(book.borrowCount, 128);
     });
 
+    test('borrowCount 缺失时默认为 0，不抛异常', () {
+      final book = Book.fromJson(const {
+        'id': 5,
+        'title': '时间简史',
+        'category': '科技',
+      });
+
+      expect(book.borrowCount, 0);
+    });
+
     test('字段缺失时抛出类型转换异常', () {
       expect(() => Book.fromJson(const {'id': 2}), throwsA(isA<TypeError>()));
     });
