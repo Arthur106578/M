@@ -46,6 +46,21 @@ class GradeBook with Logger {
         return acc;
       });
 
+  /// 一组链式统计：各档平均分（按档位名升序）。
+  /// 一条链路集齐 entries → where → map → map → fold → toList → sort，共 7 个集合方法。
+  Map<String, double> get averageByGrade => Map.fromEntries(
+        groupByGrade
+            .entries
+            .where((e) => e.value.isNotEmpty)
+            .map((e) => MapEntry(
+                  e.key,
+                  e.value.map((s) => s.score).fold<double>(0, (sum, v) => sum + v) /
+                      e.value.length,
+                ))
+            .toList()
+          ..sort((a, b) => a.key.compareTo(b.key)),
+      );
+
   /// 分数 -> 档位。
   static String _band(int score) {
     if (score >= 90) return '优';

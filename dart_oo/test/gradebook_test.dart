@@ -27,6 +27,16 @@ void main() {
       expect(groups['不及格']!.map((s) => s.name).toList(), ['E']);
     });
 
+    test('链式统计 averageByGrade：各档平均分正确', () {
+      final avg = sample.averageByGrade;
+      expect(avg.keys, containsAll(['优', '良', '中', '及格', '不及格']));
+      expect(avg['优'], closeTo(95, 1e-9));
+      expect(avg['良'], closeTo(88, 1e-9));
+      expect(avg['中'], closeTo(72, 1e-9));
+      expect(avg['及格'], closeTo(60, 1e-9));
+      expect(avg['不及格'], closeTo(45, 1e-9));
+    });
+
     test('空册：average 为 0、maxBy 为 null、countPassed 为 0', () {
       final empty = GradeBook([]);
       expect(empty.average, 0);
